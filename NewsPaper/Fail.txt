@@ -1,0 +1,78 @@
+from news.models import * 
+
+u1 = User.objects.create_user(username = 'James') 
+u2 = User.objects.create_user(username = 'Mike')
+
+Author.objects.create(authorUser = u1) 
+Author.objects.create(authorUser = u2)
+
+Category.objects.create(name = 'Nature') 
+Category.objects.create(name = 'Food') 
+Category.objects.create(name = 'IT') 
+Category.objects.create(name = 'Memes')
+
+author = Author.objects.get(id = 3)
+Post.objects.create(author = author, categoryType = 'NW', title = 'NewsTitle', text = 'SomeNewsText')
+Post.objects.get(id = 4).title
+Post.objects.create(author = author, categoryType = 'AR', title = 'ArticleTitle', text = 'SomeFirstArticleText')
+author = Author.objects.get(id = 4) 
+Post.objects.create(author = author, categoryType = 'AR', title = 'OneMoreArticleTitle', text = 'SomeSecondArticleText')
+
+Post.objects.get(id = 4).postCategory.add(Category.objects.get(id = 5)) 
+Post.objects.get(id = 4).postCategory.add(Category.objects.get(id = 6))  
+Post.objects.get(id = 5).postCategory.add(Category.objects.get(id = 5))  
+Post.objects.get(id = 5).postCategory.add(Category.objects.get(id = 8)) 
+Post.objects.get(id = 6).postCategory.add(Category.objects.get(id = 7)) 
+Post.objects.get(id = 6).postCategory.add(Category.objects.get(id = 8)) 
+
+Comment.objects.create(commentPost = Post.objects.get(id = 4), commentUser = Author.objects.get(id = 3).authorUser, text = 'SomeCommentText')
+Comment.objects.create(commentPost = Post.objects.get(id = 4), commentUser = Author.objects.get(id = 4).authorUser, text = 'AnotherOneCommentText')
+Comment.objects.create(commentPost = Post.objects.get(id = 5), commentUser = Author.objects.get(id = 3).authorUser, text = 'SuperCommentText')
+Comment.objects.create(commentPost = Post.objects.get(id = 4), commentUser = Author.objects.get(id = 4).authorUser, text = 'NegativeCommentText')
+Comment.objects.create(commentPost = Post.objects.get(id = 5), commentUser = Author.objects.get(id = 3).authorUser, text = 'MegaNegativeCommentText')
+Comment.objects.create(commentPost = Post.objects.get(id = 6), commentUser = Author.objects.get(id = 3).authorUser, text = 'PositiveCommentText')
+Comment.objects.create(commentPost = Post.objects.get(id = 6), commentUser = Author.objects.get(id = 4).authorUser, text = 'MemePicture')
+
+Comment.objects.get(id = 8).like()
+Comment.objects.get(id = 8).like()
+Comment.objects.get(id = 8).dislike() 
+Comment.objects.get(id = 9).dislike() 
+Comment.objects.get(id = 9).dislike()
+Comment.objects.get(id = 10).like()
+Comment.objects.get(id = 10).like()
+Comment.objects.get(id = 11).dislike() 
+Comment.objects.get(id = 12).like() 
+
+Comment.objects.get(id = 8).rating
+Comment.objects.get(id = 9).rating
+Comment.objects.get(id = 10).rating
+Comment.objects.get(id = 11).rating
+Comment.objects.get(id = 12).rating
+
+a1 = Author.objects.get(id = 3) 
+a1.update_rating()
+a1.ratingAuthor
+a2 = Author.objects.get(id = 4)  
+a2.update_rating()
+a2.ratingAuthor
+
+Post.objects.get(id = 4).like() 
+Post.objects.get(id = 4).like() 
+Post.objects.get(id = 5).like() 
+Post.objects.get(id = 6).dislike() 
+
+best_author = Author.objects.all().order_by('-ratingAuthor')[0]
+best_post.author.authorUser.username
+best_author.ratingAuthor
+
+best_post = Post.objects.all().order_by('-rating')[0]
+best_post.dateCreation.strftime('%Y-%m-%d')
+best_post.title
+best_post.preview()
+
+comments_best_post = best_post.comment_set.all()
+for c in comments_best_post:
+    print(c.dateCreation.strftime('%Y-%m-%d'))
+    print(c.commentUser)
+    print(c.rating)
+    print(c.text)
