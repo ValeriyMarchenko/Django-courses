@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} News list {% endblock title %}
+ 
+{% block content %}
+<h2>Are you shure you want to delete it?</h2>
+<div align="left">
+    {% for post in filter.qs %}         
+        <p>{{post.title|censor}} || {{ post.dateCreation|date:'M d Y' }}</p>                          
+        <p>{{ post.text|truncatewords:50|censor }}</p>
+        <hr>
+    {% endfor %}
+</div>
+ 
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Yes, delete"></form>
+{% endblock content %} 
