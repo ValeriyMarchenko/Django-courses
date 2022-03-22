@@ -6,13 +6,15 @@ Posts
 {% endblock title %}
 
 {% block content %}
+    <h1>All news: {{ posts|length }}</h1>
     
     <h3> {{ time_now|date:'M d Y' }} </h3>
+    <hr>
     <form method="GET">
         {{ filter.form }} <!-- Форму от фильтров за нас сделает django. А вот кнопку, увы придётся делать самому -->
-        <input type="submit" value="Найти">
+        <input type="submit" value="Search">
     </form>
-    <hr>
+    
     <table>
         <thead>
             <tr>
