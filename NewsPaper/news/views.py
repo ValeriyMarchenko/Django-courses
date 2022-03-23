@@ -5,6 +5,7 @@ from datetime import datetime
 from .filters import PostFilter
 from .forms import PostForm
 
+
 class PostList(ListView):
     model = Post
     template_name = 'posts.html'
@@ -12,16 +13,34 @@ class PostList(ListView):
     ordering = '-dateCreation'
     paginate_by = 3
 
-    def get_context_data(self, **kwargs):  
-        context = super().get_context_data(**kwargs)
-        context['time_now'] = datetime.utcnow()
-        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset()) 
-        return context
+    
+    def get_filter(self):
+        return PostFilter(self.request.GET, queryset=super().get_queryset())
+
+
+    def get_queryset(self):
+        return self.get_filter().qs
+
+    
+    def get_context_data(self, *args, **kwargs):
+        return {
+            **super().get_context_data(*args, **kwargs),
+            'filter': self.get_filter(),
+            'time_now' : datetime.utcnow(),
+            'length' : Post.objects.count()
+        }
 
 
 class PostDetailView(DetailView):
     template_name = 'news/postDetail.html'
     queryset = Post.objects.all()
+
+
+    def get_context_data(self, *args, **kwargs):
+        return {
+            **super().get_context_data(*args, **kwargs),
+            'time_now' : datetime.utcnow(),
+        }
 
 
 class PostCreateView(CreateView):
@@ -43,3 +62,27 @@ class PostDeleteView(DeleteView):
     template_name = 'news/postDelete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
+
+
+class PostSearch(ListView):
+    model = Post
+    template_name = 'postSearch.html'
+    context_object_name = 'search'
+    ordering = '-dateCreation'
+
+    
+    def get_filter(self):
+        return PostFilter(self.request.GET, queryset=super().get_queryset())
+
+
+    def get_queryset(self):
+        return self.get_filter().qs
+
+    
+    def get_context_data(self, *args, **kwargs):
+        return {
+            **super().get_context_data(*args, **kwargs),
+            'filter': self.get_filter(),
+            'time_now' : datetime.utcnow(),
+            'length' : Post.objects.count()
+        }

@@ -1,1 +1,17 @@
 {% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %} Post {% endblock title %}
+ 
+{% block content %}
+<h1>Information about post</h1>
+<form method="POST">
+    {% csrf_token %} 
+    <div align="left"> 
+    {{ form.title }} {{ form.author }} {{ form.categoryType }}
+    <hr>
+    {{ form.text }}
+    </div>
+    <p><input type="submit" value="Add post"></p>
+</form>
+{% endblock content %}

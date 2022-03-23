@@ -1,15 +1,15 @@
 {% extends 'flatpages/default.html' %}
+{% load custom_filters %}
 
 {% block title %} News list {% endblock title %}
  
 {% block content %}
-<h2>Are you shure you want to delete it?</h2>
-<div align="left">
-    {% for post in filter.qs %}         
-        <p>{{post.title|censor}} || {{ post.dateCreation|date:'M d Y' }}</p>                          
-        <p>{{ post.text|truncatewords:50|censor }}</p>
-        <hr>
-    {% endfor %}
+<h2>Are you shure you want to delete it?</h2>        
+
+<div align="left"> 
+    <h4><p>{{post.title|censor}}</p></h4>  
+    <p>{{ post.dateCreation|date:'h:i ∙ d-m-Y ' }}</p>  
+    <p>{{ post.text|censor }}</p>
 </div>
  
 <form method="POST">

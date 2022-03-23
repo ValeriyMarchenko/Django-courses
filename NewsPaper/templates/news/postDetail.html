@@ -1,15 +1,15 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
 
-{% block title %} Post {% endblock title %}
+{% block title %} post {% endblock title %}
 
 {% block content %}
 
-<h3> {{ time_now|date:'M d Y' }} </h3>
+<h3> {{ time_now|date:'d-m-Y' }} </h3>
 <hr>
 
 <div align="left">
-    <p>{{post.title|censor}} Date: {{ post.dateCreation|date:'M d Y' }}</p>                          
+    <p><h4>{{post.title|censor}}</h4> Date: {{ post.dateCreation|date:'h:i ∙ d-m-Y' }}</p>                          
     <p>{{ post.text|censor }}</p>
 </div>
 
