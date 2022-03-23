@@ -19,24 +19,19 @@ Posts
 </form>
 
 
-<div align="left">
+
 {% for post in filter.qs %}         
-    <p>{{post.title|censor}} || {{ post.dateCreation|date:'M d Y' }}</p>                          
-    <p>{{ post.text|truncatewords:50|censor }}</p>
-    <a href="../{{ new.pk }}">Read more...</a>
-    <hr>
+<div style="float: right"><p>{{ post.dateCreation|date:'M d Y' }}</p>
+    <a href="{% url 'postUpdate' post.id %}"><u>Edit</u></a> 
+    <a href="{% url 'postDelete' post.id %}"><u> Delete </u></a></div>
+    <div align="left"> 
+        <p>{{post.title|censor}}        
+        <p>{{ post.text|truncatewords:50|censor }}</p>
+        <a href="{% url 'postDetail' post.id %}">Read more...</a>
+        <hr>
+    </div>
 {% endfor %}
 </div>
-{% for post in filter.qs %} <!-- поменяем products на filter.qs, т.к. теперь мы забираем уже отобранную по каким-то параметрам информацию -->
-    <tr>
-        <td>
-            <a href="{% url 'postDetail' post.id %}">{{ post.title }}</a> 
-            <a href="{% url 'postUpdate' post.id %}"><u>Edit</u></a> 
- 
-            <a href="{% url 'postDelete' post.id %}"><u> Delete </u></a>
-        </td>
-    </tr>
-{% endfor %}
 
 
 {% if is_paginated %}
