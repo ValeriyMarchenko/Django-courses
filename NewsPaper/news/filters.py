@@ -14,6 +14,8 @@ class PostFilter(FilterSet):
             }
         )
     )
+
+    
     dateCreation.field.error_messages = {'invalid' : 'Input date in format: DD.MM.YYYY. Example: 05.02.2022'}
     dateCreation.field.widget.attrs = {'placeholder' : 'DD.MM.YYYY'}
 
@@ -24,12 +26,4 @@ class PostFilter(FilterSet):
             'title': ['icontains'],
             'author': ['exact'],
             'categoryType': ['exact'],
-            
         }
-
-
-# date = django_filters.DateFilter(
-#         field_name="create_time",
-#         lookup_expr="gte",
-#         label="Date:",
-#         )

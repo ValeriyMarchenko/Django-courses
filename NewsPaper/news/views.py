@@ -3,7 +3,10 @@ from django.views.generic import ListView, UpdateView, CreateView, DetailView, D
 from .models import Post
 from datetime import datetime
 from .filters import PostFilter
-from .forms import PostForm
+from .forms import PostForm, UserForm
+from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
 
 class PostList(ListView):
@@ -86,3 +89,11 @@ class PostSearch(ListView):
             'time_now' : datetime.utcnow(),
             'length' : Post.objects.count()
         }
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'news/authorUpdate.html'
+    form_class = UserForm
+    success_url = '/news/'
+
+    def get_object(self, **kwargs):
+        return self.request.user

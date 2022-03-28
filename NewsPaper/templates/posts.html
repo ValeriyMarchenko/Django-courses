@@ -8,6 +8,7 @@
 <hr>
 
 
+
 {% for post in posts %}         
 <div style="float: right"><p>{{ post.dateCreation|date:'h:i ∙ d-m-Y ' }}</p>
 <a href="{% url 'postUpdate' post.id %}"><u>Edit</u></a> 

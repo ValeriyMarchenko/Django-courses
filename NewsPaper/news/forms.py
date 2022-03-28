@@ -1,5 +1,6 @@
 from django.forms import ModelForm, BooleanField
 from .models import Post
+from django.contrib.auth.models import User
 
 class PostForm(ModelForm):
     class Meta:
@@ -9,3 +10,8 @@ class PostForm(ModelForm):
                     'categoryType',
                     'text',
                 ]
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
