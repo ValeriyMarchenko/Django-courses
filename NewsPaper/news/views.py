@@ -7,6 +7,7 @@ from .forms import PostForm, UserForm
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
 class PostList(ListView):
@@ -97,3 +98,15 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, **kwargs):
         return self.request.user
+
+
+class AddNews(LoginRequiredMixin, PermissionRequiredMixin, PostCreateView):
+    permission_required = ('news.add_post',)
+
+
+class ChangeNews(LoginRequiredMixin, PermissionRequiredMixin, PostUpdateView):
+    permission_required = ('news.change_post',)
+
+
+class DeleteNews(LoginRequiredMixin, PermissionRequiredMixin, PostDeleteView):
+    permission_required = ('news.delete_post',)
