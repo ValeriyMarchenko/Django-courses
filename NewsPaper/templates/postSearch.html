@@ -17,12 +17,12 @@
 
 {% for post in filter.qs %}         
 <div style="float: right"><p>{{ post.dateCreation|date:'h:i ∙ d-m-Y ' }}</p>
-<a href="{% url 'postUpdate' post.id %}"><u>Edit</u></a> 
-<a href="{% url 'postDelete' post.id %}"><u>Delete</u></a></div>
+<a class="nav-link" href="{% url 'postUpdate' post.id %}">Edit</a> 
+<a class="nav-link" href="{% url 'postDelete' post.id %}">Delete</a></div>
 <div align="left"> 
     <h4><p>{{post.title|censor}}</p></h4>    
     <p>{{ post.text|truncatewords:50|censor }}</p>
-    <a href="{% url 'postDetail' post.id %}">Read more...</a>
+    <a class="nav-link" href="{% url 'postDetail' post.id %}">Read more...</a>
     <hr>
 </div>
 {% endfor %}
