@@ -1,8 +1,10 @@
 {% extends 'flatpages/default.html' %}
+{% load custom_filters %}
 
-
+{% block content %}
 <form method="POST">
     {% csrf_token %} 
     {{ form.as_p }}
     <input type="submit" value="Change">
 </form>
+{% endblock content %}

@@ -94,7 +94,7 @@ class PostSearch(ListView):
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'news/authorUpdate.html'
     form_class = UserForm
-    success_url = '/news/'
+    success_url = 'http://127.0.0.1:8000/'
 
     def get_object(self, **kwargs):
         return self.request.user

@@ -9,6 +9,10 @@
 <p> Email: {{user.email}} </p> 
 <p> Status: {% if is_not_author %} Default user {% else %} Author {% endif %} </p> 
 
+<div align="right"> 
+    <a class="nav-link" href="{% url 'userUpdate' %}">Edit profile</a> <br>
+</div>
+
 <br>
 <a class="nav-link" href="sign/logout/">Log out</a>
 

@@ -10,5 +10,5 @@ urlpatterns = [
     path('create/<int:pk>', ChangeNews.as_view(), name='postUpdate'),
     path('delete/<int:pk>', DeleteNews.as_view(), name='postDelete'),
     path('search/', PostSearch.as_view(), name='postSearch'),
-    path('http://127.0.0.1:8000/', UserUpdateView.as_view(), name='userUpdate')
+    path('profile/', UserUpdateView.as_view(), name='userUpdate')
 ]
