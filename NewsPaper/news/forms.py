@@ -14,4 +14,4 @@ class PostForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['username', 'email']

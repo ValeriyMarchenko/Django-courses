@@ -4,6 +4,9 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 
+from django.db import models
+
+
 @login_required
 def upgradeAuth(request):
     user = request.user
@@ -11,3 +14,6 @@ def upgradeAuth(request):
     if not request.user.groups.filter(name='author').exists():
         premium_group.user_set.add(user)
     return redirect('/')
+
+    
+    
