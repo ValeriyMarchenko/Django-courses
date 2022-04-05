@@ -1,0 +1,69 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Category
+{% endblock title %}
+
+{% block content %}
+    <h3>Subscription for categories</h3>
+    <br>
+    {% if subscriptionView %}
+        <ul>
+        {% for sub in subscriptionView %}
+            <hr>
+            <div align="left"> 
+                <h5>{{ sub.name }}</h5>
+                {% if not sub.is_subscribed %}
+                    <form action="subscribe" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="id_cat" value="{{ sub.pk }}">
+                        <input type="submit" value="Subscribe">
+                    </form>
+                {% else %}
+                    <br>You have already subscribed for this category
+                    <form action="unsubscribe" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="id_cat" value="{{ sub.pk }}">
+                        <input type="submit" value="Unsubscribe">
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+        </ul>
+        
+
+        
+        <p>
+            {% if is_paginated %}
+        
+        
+                {% if page_obj.has_previous %}
+                    <a href="?{{ request.get_full_path|update_page:1}}">First</a>
+                    <a href="?{{ request.get_full_path|update_page:page_obj.previous_page_number}}"><<<</a>
+                {% endif %}
+            
+        
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a>{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a  href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+        
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">>>></a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+        
+            {% endif %}       
+        </p>
+
+    {% else %}
+        <h3>We dont have categories yet</h3>
+    {% endif %}
+
+{% endblock content %}

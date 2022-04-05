@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
-from .models import Post
+from .models import Post, Category, CategorySubscribers, PostCategory
 from datetime import datetime
 from .filters import PostFilter
 from .forms import PostForm, UserForm
@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 
 class PostList(ListView):
@@ -98,6 +100,29 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, **kwargs):
         return self.request.user
+
+
+class SubscriptionView(ListView):
+    model = Category
+    template_name = 'subscriptions.html'
+    context_object_name = 'subscriptionView'
+    queryset = Category.objects.order_by('name')
+    paginate_by = 4
+
+
+@login_required
+def add_subscribe(request):
+    user = request.user
+    category = Category.objects.get(pk=request.POST['id_cat'])
+    subscribe = CategorySubscribers(id_user=user, id_category=category)
+    subscribe.save()
+    return redirect('/news/subscriptions/')
+
+@login_required
+def end_subscribe(request):
+    pk = request.GET.get('pk')
+    Category.objects.get(pk=pk).subscribers.remove(request.user)
+    return redirect('/news/subscriptions/')
 
 
 class AddNews(LoginRequiredMixin, PermissionRequiredMixin, PostCreateView):
