@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
-from .models import Post, Category, CategorySubscribers, PostCategory
+from .models import *
 from datetime import datetime
 from .filters import PostFilter
 from .forms import PostForm, UserForm
@@ -113,15 +113,21 @@ class SubscriptionView(ListView):
 @login_required
 def add_subscribe(request):
     user = request.user
+    print(user)
     category = Category.objects.get(pk=request.POST['id_cat'])
-    subscribe = CategorySubscribers(id_user=user, id_category=category)
+    print(category)
+    subscribe = CategorySubscribers(id_user = user , id_category = category)
+    print(subscribe)
     subscribe.save()
     return redirect('/news/subscriptions/')
 
+
 @login_required
 def end_subscribe(request):
-    pk = request.GET.get('pk')
-    Category.objects.get(pk=pk).subscribers.remove(request.user)
+    user = request.user
+    cat = Category.objects.get(pk=request.POST['id_cat'])
+    sub = CategorySubscribers.objects.get(id_user = user.id, id_category = cat.id)
+    sub.delete()
     return redirect('/news/subscriptions/')
 
 
