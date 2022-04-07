@@ -10,6 +10,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 
 
 class PostList(ListView):
@@ -52,6 +53,34 @@ class PostDetailView(DetailView):
 class PostCreateView(CreateView):
     template_name = 'news/postCreate.html'
     form_class = PostForm
+
+    def post(self, request, *args, **kwargs):
+        post = Post(
+            author=request.POST['author'],
+            title=request.POST['title'],
+            text=request.POST['text'], 
+            categoryType = request.POST['categoryType']
+        )
+        post.save()
+
+        html_content = render_to_string( 
+            'pCreated.html',
+            {
+                'post': post,
+            }
+        )
+        
+        msg = EmailMultiAlternatives(
+            subject=f'{post.title} {post.date.strftime("%Y-%M-%d")}',
+            body=post.text,  #  это то же, что и message
+            from_email='s44ptdude@yandex.ru',
+            to=['valeratv707@gmail.com'],  # это то же, что и recipients_list
+        )
+        msg.attach_alternative(html_content, "text/html")  # добавляем html
+
+        msg.send()  # отсылаем
+
+        return redirect('/news/')
 
 
 class PostUpdateView(UpdateView):
@@ -116,18 +145,23 @@ def add_subscribe(request):
     print(user)
     category = Category.objects.get(pk=request.POST['id_cat'])
     print(category)
-    subscribe = CategorySubscribers(id_user = user , id_category = category)
-    print(subscribe)
-    subscribe.save()
+    # subscribe = CategorySubscribers(id_user = user, id_category = category)
+    if not category.subscribers.filter(id=user.id).exists():
+        
+        print(user.id)
+        category.subscribers.add(user)
     return redirect('/news/subscriptions/')
 
 
 @login_required
 def end_subscribe(request):
     user = request.user
-    cat = Category.objects.get(pk=request.POST['id_cat'])
-    sub = CategorySubscribers.objects.get(id_user = user.id, id_category = cat.id)
-    sub.delete()
+    print(user)
+    category = Category.objects.get(pk=request.POST['id_del'])
+    print(category)
+    # subscribe = CategorySubscribers(id_user = user, id_category = category)
+    if category.subscribers.filter(id=user.id).exists():
+        category.subscribers.remove(user)
     return redirect('/news/subscriptions/')
 
 

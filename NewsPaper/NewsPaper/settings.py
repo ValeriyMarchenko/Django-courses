@@ -149,7 +149,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [BASE_DIR/'static']
 
 LOGIN_URL = 'http://127.0.0.1:8000/accounts/login/?next=/'
-LOGIN_REDIRECT_URL = '/news/'
+LOGIN_REDIRECT_URL = '/'
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
 
