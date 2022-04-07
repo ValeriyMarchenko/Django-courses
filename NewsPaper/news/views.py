@@ -54,33 +54,33 @@ class PostCreateView(CreateView):
     template_name = 'news/postCreate.html'
     form_class = PostForm
 
-    def post(self, request, *args, **kwargs):
-        post = Post(
-            author=request.POST['author'],
-            title=request.POST['title'],
-            text=request.POST['text'], 
-            categoryType = request.POST['categoryType']
-        )
-        post.save()
+    # def post(self, request, *args, **kwargs):
+    #     post = Post(
+    #         author=request.POST['author'],
+    #         title=request.POST['title'],
+    #         text=request.POST['text'], 
+    #         categoryType = request.POST['categoryType']
+    #     )
+    #     post.save()
 
-        html_content = render_to_string( 
-            'pCreated.html',
-            {
-                'post': post,
-            }
-        )
+    #     html_content = render_to_string( 
+    #         'pCreated.html',
+    #         {
+    #             'post': post,
+    #         }
+    #     )
         
-        msg = EmailMultiAlternatives(
-            subject=f'{post.title} {post.date.strftime("%Y-%M-%d")}',
-            body=post.text,  #  это то же, что и message
-            from_email='s44ptdude@yandex.ru',
-            to=['valeratv707@gmail.com'],  # это то же, что и recipients_list
-        )
-        msg.attach_alternative(html_content, "text/html")  # добавляем html
+    #     msg = EmailMultiAlternatives(
+    #         subject=f'{post.title} {post.date.strftime("%Y-%M-%d")}',
+    #         body=post.text,  #  это то же, что и message
+    #         from_email='s44ptdude@yandex.ru',
+    #         to=['valeratv707@gmail.com'],  # это то же, что и recipients_list
+    #     )
+    #     msg.attach_alternative(html_content, "text/html")  # добавляем html
 
-        msg.send()  # отсылаем
+    #     msg.send()  # отсылаем
 
-        return redirect('/news/')
+    #     return redirect('/news/')
 
 
 class PostUpdateView(UpdateView):

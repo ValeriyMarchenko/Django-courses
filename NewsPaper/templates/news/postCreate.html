@@ -8,10 +8,12 @@
 <form method="POST">
     {% csrf_token %} 
     <div align="left"> 
-    {{ form.title }} {{ form.author }} {{ form.categoryType }}
-    <hr>
-    {{ form.text }}
+        {{ form.title }} {{ form.categoryType }} {{ form.author }}
+        <hr>
+        {{ form.text }}
+        {{ form.postCategory }} </div>
     </div>
+    <br>
     <p><input type="submit" value="Add post"></p>
 </form>
 {% endblock content %}

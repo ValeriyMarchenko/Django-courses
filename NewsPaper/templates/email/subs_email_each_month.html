@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Hey! We have prepared a weekly top of articles from our portal!</h2>
+    <table>
+      <thead>
+        <th>
+            Title
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            Brief content
+        </th>
+        <th>
+
+        </th>
+      </thead>
+      <tbody>
+        {% for post in posts %} 
+        <tr>
+            <td>
+                {{ post.title }} 
+            </td>
+            <td>
+                {% for c in post.postCategory.all %}
+                    {{ c.name }} 
+                {% endfor %}
+            </td>
+            <td>
+                {{ post.dateCreation|date:'d M Y' }}
+            </td>
+            <td>
+                {{ post.text|truncatechars:50 }}
+            </td>
+            <td>
+                <a href="http://127.0.0.1:8000{{ post.get_absolute_url }}">Read now</a>
+            </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</body>
+</html>
