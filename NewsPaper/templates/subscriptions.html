@@ -21,16 +21,15 @@ Category
                         <input type="hidden" name="id_cat" value="{{ sub.pk }}">
                         <input type="submit" value="Subscribe">
                     </form>
-                {% else %}
+                    {% else %}
                     <br>You have already subscribed for this category
-                {% endif %}
-                {% if sub.is_subscribed %}
-                    <form action="unsubscribe" method="POST">
+                     <form action="unsubscribe" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="id_del" value="{{ sub.pk }}">
                         <input type="submit" value="Unsubscribe">
                     </form>
                 {% endif %}
+                
             </div>
         {% endfor %}
         </ul>

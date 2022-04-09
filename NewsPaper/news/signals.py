@@ -34,13 +34,13 @@ def notify_users_news(sender, instance, action, **kwargs):
 
             msg = EmailMultiAlternatives(
                 subject=instance.title,
-                body=f'Здравствуй, {usr.first_name} {usr.last_name}. Новая статья в твоём любимом разделе!'+instance.text,  #  это то же, что и message
+                body=f'Hey there! New post in  your favourite category!'+instance.text, 
                 from_email='s44tpdude@yandex.ru',
-                to=[f'{usr.email}'],  # это то же, что и recipients_list
+                to=[f'{usr.email}'], 
             )
-            msg.attach_alternative(html_content, "text/html")  # добавляем html
+            msg.attach_alternative(html_content, "text/html")  
 
-            msg.send()  # отсылаем
+            msg.send()  
     else:
         print('5555555')
         list_of_subscribers = []
@@ -63,10 +63,10 @@ def notify_users_news(sender, instance, action, **kwargs):
                 subject=instance.title,
                 body=f'Здравствуй. Cтатья в твоём любимом разделе отредактирована!'+instance.text,  #  это то же, что и message
                 from_email='s44tpdude@yandex.ru',
-                to=[f'{usr.email}'],  # это то же, что и recipients_list
+                to=[f'{usr.email}'], 
             )
-            msg.attach_alternative(html_content, "text/html")  # добавляем html
+            msg.attach_alternative(html_content, "text/html") 
 
-            msg.send()  # отсылаем
+            msg.send()  
 
 # m2m_changed.connect(notify_users_news, sender=Post)

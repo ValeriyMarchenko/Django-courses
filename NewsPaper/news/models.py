@@ -30,6 +30,9 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.name.title()}'
 
+    def get_category(self):
+        return self.name
+
     @property
     def is_subscribed(self):
         return CategorySubscribers.objects.filter(id_category=self.pk).exists()

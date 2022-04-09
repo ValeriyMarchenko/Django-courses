@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     # ... include the providers you want to enable:
     'allauth.socialaccount.providers.google',
+    'django_apscheduler',
+    
 ]
 
 SITE_ID = 1
@@ -153,7 +155,8 @@ LOGIN_REDIRECT_URL = '/'
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
 
-
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
 
 EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
