@@ -61,7 +61,7 @@ def notify_users_news(sender, instance, action, **kwargs):
 
             msg = EmailMultiAlternatives(
                 subject=instance.title,
-                body=f'Здравствуй. Cтатья в твоём любимом разделе отредактирована!'+instance.text,  #  это то же, что и message
+                body=f'Hey! Post in yours favourite category has been edit'+instance.text,  #  это то же, что и message
                 from_email='s44tpdude@yandex.ru',
                 to=[f'{usr.email}'], 
             )

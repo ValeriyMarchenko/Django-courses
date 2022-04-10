@@ -151,7 +151,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [BASE_DIR/'static']
 
 LOGIN_URL = 'http://127.0.0.1:8000/accounts/login/?next=/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'news/'
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
 
@@ -162,7 +162,7 @@ APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почты для всех один и тот же
 EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
 EMAIL_HOST_USER = 's44tpdude'  # ваше имя пользователя, например, если ваша почта user@yandex.ru, то сюда надо писать user, иными словами, это всё то что идёт до собаки
-EMAIL_HOST_PASSWORD = '' # пароль от почты
+EMAIL_HOST_PASSWORD = 'Awot2002arelav' # пароль от почты
 EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
 
 ADMINS = [
@@ -177,3 +177,4 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTIFICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_SUBJECT_PREFIX = ' News-Portal '
