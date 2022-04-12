@@ -11,6 +11,8 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
 
 
 class PostList(ListView):
@@ -54,33 +56,16 @@ class PostCreateView(CreateView):
     template_name = 'news/postCreate.html'
     form_class = PostForm
 
-    # def post(self, request, *args, **kwargs):
-    #     post = Post(
-    #         author=request.POST['author'],
-    #         title=request.POST['title'],
-    #         text=request.POST['text'], 
-    #         categoryType = request.POST['categoryType']
-    #     )
-    #     post.save()
+    
 
-    #     html_content = render_to_string( 
-    #         'pCreated.html',
-    #         {
-    #             'post': post,
-    #         }
-    #     )
+    subject = 'Created a new post!'
+    content = render_to_string('distribution.html', {'post': Post, })
+    email = request.user.email
+
+    # Отправка уведомлений о новой статье через Celery
+    new_post_notification.delay(subject, email, content)
+
         
-    #     msg = EmailMultiAlternatives(
-    #         subject=f'{post.title} {post.date.strftime("%Y-%M-%d")}',
-    #         body=post.text,  #  это то же, что и message
-    #         from_email='s44ptdude@yandex.ru',
-    #         to=['valeratv707@gmail.com'],  # это то же, что и recipients_list
-    #     )
-    #     msg.attach_alternative(html_content, "text/html")  # добавляем html
-
-    #     msg.send()  # отсылаем
-
-    #     return redirect('/news/')
 
 
 class PostUpdateView(UpdateView):
@@ -175,3 +160,8 @@ class ChangeNews(LoginRequiredMixin, PermissionRequiredMixin, PostUpdateView):
 
 class DeleteNews(LoginRequiredMixin, PermissionRequiredMixin, PostDeleteView):
     permission_required = ('news.delete_post',)
+
+
+
+
+    

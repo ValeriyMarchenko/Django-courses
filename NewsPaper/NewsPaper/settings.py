@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import redis
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -180,3 +181,9 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ' News-Portal '
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+CELERY_BROKER_URL = 'redis://:v7PKtDojnEMbk9BV0br3vR9273wXi0Bl@redis-18890.c250.eu-central-1-1.ec2.cloud.redislabs.com:18890'
+CELERY_RESULT_BACKEND = 'redis://:v7PKtDojnEMbk9BV0br3vR9273wXi0Bl@redis-18890.c250.eu-central-1-1.ec2.cloud.redislabs.com:18890'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

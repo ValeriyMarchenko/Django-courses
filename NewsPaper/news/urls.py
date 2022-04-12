@@ -15,3 +15,6 @@ urlpatterns = [
     path('subscriptions/subscribe', add_subscribe, name = 'subscribe'),
     path('subscriptions/unsubscribe', end_subscribe, name = 'unsubscribe'),
 ]
+
+
+
