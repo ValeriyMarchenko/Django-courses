@@ -12,6 +12,12 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+
+from .tasks import send_mail_for_sub_once
+from django.dispatch import receiver
+from django.db.models.signals import m2m_changed
+from django.core.mail import EmailMultiAlternatives
 
 
 
@@ -56,14 +62,15 @@ class PostCreateView(CreateView):
     template_name = 'news/postCreate.html'
     form_class = PostForm
 
+   
     
-
-    subject = 'Created a new post!'
-    content = render_to_string('distribution.html', {'post': Post, })
-    email = request.user.email
+    # new_post_notification()
+    # subject = 'Created a new post!'
+    # content = render_to_string('distribution.html', {'post': Post, })
+    # email = request.user.email
 
     # Отправка уведомлений о новой статье через Celery
-    new_post_notification.delay(subject, email, content)
+    # new_post_notification.delay(subject, email, content)
 
         
 
@@ -163,5 +170,34 @@ class DeleteNews(LoginRequiredMixin, PermissionRequiredMixin, PostDeleteView):
 
 
 
+@receiver(m2m_changed, sender=Post.postCategory.through)
+def notify_users_news(instance, action, **kwargs):
+    full_url = ''.join(['http://', get_current_site(None).domain, ':8000'])
+    if action == 'post_add':
+        list_of_subscribers=[]
+        print('11111')
+        for c in instance.postCategory.all():
+            print('222222')
+            print('c')
+            print('instance.postCategory.all()')
+            for usr in c.subscribers.all():
+                print('333333')
+                print('c.subscribers.all()')
+                list_of_subscribers.append(usr)
+        for usr in list_of_subscribers:
+            print('4444444')
+            user_email = usr.email
+            html_content = render_to_string(
+                'email/subs_email.html',
+                {
+                    'post': instance,
+                    'usr': usr,
+                    'full_url': full_url,
+                }
+            )
 
-    
+        
+        print('start')
+        send_mail_for_sub_once.delay(user_email, html_content)
+        print('end')
+ 

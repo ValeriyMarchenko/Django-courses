@@ -8,6 +8,10 @@ from django.shortcuts import redirect
 from django.contrib.sites.shortcuts import get_current_site
 
 
+
+    
+
+
 # ---------------MOVED TO CELERY (TASKS.PY)-----------------
 
 # @receiver(m2m_changed, sender=Post.postCategory.through)
