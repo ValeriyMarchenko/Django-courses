@@ -76,6 +76,10 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.name.title()}: {self.description[:20]}'
 
+    # def save (self, *args, ** kwargs):
+    #     super().save(*args, **kwargs)
+    #     cashe.delete(f'post-{self.pk}')
+
 
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete = models.CASCADE)
