@@ -194,3 +194,130 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'cache_files'), # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
     }
 }
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    # Форматы выдаваемых сообщений
+    'formatters': {
+        # Формат для всех сообщений уровня Debug и выше, выводящихся в консоль (уровень, время, сообщение)
+        'base_format': {
+            'format': '%(levelname)s %(asctime)s %(message)s'
+        },
+        # Формат сообщений Warning и выше (включает путь к источнику события pathname)
+        'warning_format': {
+            'format': '%(levelname)s %(asctime)s %(pathname)s %(message)s'
+        },
+        # Формат сообщений Error и Critical, а также для файла errors.log (содержит стек ошибок exc_info)
+        'error_format': {
+            'format': '%(levelname)s %(asctime)s %(pathname)s %(exc_info)s %(message)s'
+        },
+        # Формат сообщений для файла general.log (время, уровень, название модуля)
+        'general_format': {
+            'format': '%(levelname)s %(asctime)s %(module)s'
+        },
+        # Формат сообщений для файла security.log (время, уровень, название модуля, сообщение)
+        'security_format': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
+        }
+    },
+    # Фильтры
+    'filters': {
+        # Фильтр для сообщений при DEBUG = true
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        # Фильтр для сообщений при DEBUG = false
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    # Обработчики сообщений
+    'handlers': {
+        # Вывод в консоль сообщений уровня Debug и выше (если Debug = true)
+        'base_console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'base_format'
+        },
+        # Вывод в консоль сообщений уровня Warning и выше (если Debug = true)
+        'warning_console': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'warning_format'
+        },
+        # Вывод в консоль сообщений уровня Error и выше (если Debug = true)
+        'error_console': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'error_format'
+        },
+        # Запись в файл general.log сообщений уровня Info и выше
+        'general_log_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'general.log'),
+            'formatter': 'general_format'
+        },
+        # Запись в файл errors.log сообщений уровня Error и выше
+        'error_log_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'errors.log'),
+            'formatter': 'error_format'
+        },
+        # Запись в файл security.log всех сообщений
+        'security_log_file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'security.log'),
+            'formatter': 'security_format'
+        },
+        # Отправка на почту сообщений уровня Error и выше (если Debug = false)
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'warning_format'
+        }
+    },
+    # отлов сообщений
+    'loggers': {
+        # Вывод всех сообщений в консоль и запись в general.log
+        # сообщений от основного логгера django
+        'django': {
+            'handlers': ['base_console', 'warning_console', 'error_console', 'general_log_file'],
+            'propagate': True,
+        },
+        # Запись в errors.log и отправка по почте сообщений от django.request
+        'django.request': {
+            'handlers': ['error_log_file', 'mail_admins'],
+            'propagate': False,
+        },
+        # Запись в errors.log и отправка по почте сообщений от django.server
+        'django.server': {
+            'handlers': ['error_log_file', 'mail_admins'],
+            'propagate': False,
+        },
+        # Запись в errors.log сообщений от django.template
+        'django.template': {
+            'handlers': ['error_log_file'],
+            'propagate': False,
+        },
+        # Запись в errors.log сообщений от django.db_backends
+        'django.db_backends': {
+            'handlers': ['error_log_file'],
+            'propagate': False,
+        },
+        # Запись в security.log сообщений от django.security
+        'django.security': {
+            'handlers': ['security_log_file'],
+            'propagate': False,
+        },
+    }
+
+}
